@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hide Message in Emoji</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+            padding: 10px; /* Added padding for small screens */
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        input[type="text"], textarea {
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: calc(100% - 24px);
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        input[type="text"]:hover, textarea:hover {
+            border-color: #25D366;
+            box-shadow: 0 0 5px rgba(37, 211, 102, 0.5);
+        }
+        input[type="text"]:focus, textarea:focus {
+            border-color: #25D366;
+            outline: none;
+            box-shadow: 0 0 5px rgba(37, 211, 102, 0.5);
+        }
+        input[type="submit"] {
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            background-color: #25D366;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%; /* Full width for better touch access */
+        }
+        input[type="submit"]:hover {
+            background-color: #128C7E;
+        }
+        .result {
+            margin-top: 20px;
+            position: relative;
+        }
+        .result input[type="text"] {
+            background-color: #f0f0f0;
+            cursor: not-allowed;
+            padding-right: 100px; /* Adjusted for copy button */
+        }
+        .copy-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            background-color: white;
+            color: #25D366;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            font-size: 0.875rem; /* Adjusted font size for better fit */
+        }
+        .copy-btn:hover {
+            background-color: #e1e8ed;
+            color: #25D366;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 0.75rem; /* Smaller font size for the footer */
+            color: #888;
+        }
+        @media (max-width: 320px) {
+            .container {
+                padding: 10px;
+            }
+            input[type="text"], textarea {
+                padding: 8px;
+                font-size: 0.875rem; /* Adjust text size for small screens */
+            }
+            input[type="submit"] {
+                padding: 10px;
+            }
+            .copy-btn {
+                padding: 8px 12px;
+                font-size: 0.75rem; /* Adjust text size for small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hide Message in Emoji</h1>
+        <form id="linkForm">
+            <label for="emoji">Enter Emoji (inside your message hidden):</label>
+            <input type="text" id="emoji" name="emoji" placeholder="🎁">
+            <label for="message">Enter your message:</label>
+            <textarea id="message" name="message" rows="4" placeholder="Hi, Bro when you return my money?"></textarea>
+            <input type="submit" value="Generate Link">
+        </form>
+        <div class="result" id="result">
+            <input type="text" id="whatsappLink" disabled readonly>
+            <button class="copy-btn" id="copyBtn">Copy Link</button>
+        </div>
+        <div class="footer">
+            &copy; 2024 Zaid Hussain
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('linkForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var emoji = document.getElementById('emoji').value.trim();
+            var message = document.getElementById('message').value.trim();
+
+            if (emoji === '' || message === '') {
+                alert('Please enter both an emoji and a message.');
+                return;
+            }
+
+            var hiddenEmojiLink = emoji + '.' + message;
+
+            var whatsappLinkInput = document.getElementById('whatsappLink');
+            whatsappLinkInput.value = hiddenEmojiLink;
+        });
+
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            var whatsappLinkInput = document.getElementById('whatsappLink');
+
+            // Ensure the input field is focused and text is selected
+            whatsappLinkInput.focus();
+            whatsappLinkInput.select();
+
+            navigator.clipboard.writeText(whatsappLinkInput.value)
+                .then(function() {
+                    alert('Link copied to clipboard!');
+                })
+                .catch(function(err) {
+                    console.error('Failed to copy text: ', err);
+                    alert('Failed to copy link.');
+                });
+        });
+    </script>
+</body>
+</html>
